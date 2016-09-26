@@ -1,0 +1,259 @@
+<template>
+  <div style="background-color: #555" class="pull-container">
+    <div class="pull-body"
+      :style="{ transform: `translateY(${diffMax}px)` }">
+      <div style="background-color: #eee" class="pulldown"
+        :class="[pulldownChangeStyle,{'hide':!displaypullDownDiv}]">
+        <div class="pulldown-icon"></div>
+        <div class="pulldown-label">{{pullDownTip}}</div>
+      </div>
+      <slot></slot>
+      <div class="pullup"
+      :class="[pullupChangeStyle,{'hide':!displaypullUpDiv}]">
+        <div class="pullup-icon"></div>
+        <div class="pullup-label">{{pullUpTip}}</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+const PULL_DOWN_NORMAL='下拉刷新'
+const PULL_DOWN_RELEASE='释放加载'
+const PULL_DOWN_LOADING='加载中，请稍后'
+
+const PULL_UP_NORMAL='上拉刷新'
+const PULL_UP_RELEASE='释放加载'
+const PULL_UP_LOADING='加载中，请稍后'
+
+// 加载状态-1默认，0显示提示下拉信息，1显示释放刷新信息，2执行加载数据，只有当为-1时才能再次加载
+const STATE_DEFAULT=-1
+const STATE_PULL_NORMAL=0
+const STATE_PULL_RELEASE=1
+const STATE_PULL_LOADING=2
+
+const STYLE_RELEASE='release'
+const STYLE_REFRESH='refresh'
+
+
+export default {
+  props: {
+    maxScrollY: {
+    type: Number,
+    default: 150,
+  },
+  disablePullDown: {
+    type: Boolean,
+    default: false,
+  },
+  disablePullUp: {
+    type: Boolean,
+    default: false,
+  }
+},
+
+computed: {
+  diff() {
+    return this.end - this.start
+  },
+  diffMax() {
+    let delta= this.end - this.start
+    if (delta>0) 
+      return delta>this.maxScrollY?this.maxScrollY:delta;
+    else
+      return delta<-this.maxScrollY?-this.maxScrollY:delta;
+  }
+},
+
+data() {
+  return {
+    start: 0,
+    end: 0,
+    deltaY: 0,
+    pullDownHeight: 50,
+    pullUpHeight: 50,
+    isTouchEnd: false,
+    displaypullDownDiv: false,
+    displaypullUpDiv: false,
+    pullUpTip: PULL_UP_NORMAL,
+    pullDownTip: PULL_DOWN_NORMAL,
+    refreshStep:STATE_DEFAULT,
+    timeoutH:0,
+    pulldownChangeStyle:'',
+    pullupChangeStyle:''
+  }
+},
+
+ready() {
+  this.$el.addEventListener('touchstart', this._onTouchStart)
+},
+
+methods: {
+  _onTouchStart (e) {
+    this.isTouchEnd = false
+    this.start=this.end = this._getTouchYPos(e)
+    this.$el.addEventListener('touchmove', this._onTouchMove)
+    this.$el.addEventListener('touchend', this._onTouchEnd)
+  },
+  _getTouchYPos(e) {
+    var key = 'pageY'
+    console.log(e);
+    return e.touches ? e.touches[0][key] : e[key]
+  },
+
+  _onTouchMove (e) {
+    this.end = this._getTouchYPos(e)
+    console.log('touchmove'+this.diff+' start='+this.start+' end='+this.end)
+    console.log('refreshStep'+this.refreshStep)
+    // 加载状态-1STATE_DEFAULT默认，0STATE_PULL_NORMAL显示提示下拉信息，
+    // 1STATE_PULL_RELEASE显示释放刷新信息，2STATE_PULL_LOADING执行加载数据，只有当为-1时才能再次加载
+    if(this.refreshStep==STATE_PULL_LOADING){
+          //do nothing
+        }else if(!this.disablePullDown && this.diff > 0 && this.diff < this.pullDownHeight){
+          this.displaypullDownDiv=true
+          this.pulldownChangeStyle='';
+          this.pullDownTip = PULL_DOWN_NORMAL
+          this.refreshStep = STATE_PULL_NORMAL
+        }else if(!this.disablePullDown && this.diff >= this.pullDownHeight){
+          this.pulldownChangeStyle=STYLE_RELEASE
+          this.pullDownTip=PULL_DOWN_RELEASE
+          this.refreshStep = STATE_PULL_RELEASE
+        }else if(!this.disablePullUp && this.diff < 0 && -this.diff >= this.pullUpHeight){
+          this.pullupChangeStyle=STYLE_RELEASE
+          this.pullUpTip=PULL_UP_RELEASE
+          this.refreshStep = STATE_PULL_RELEASE
+        }else if(!this.disablePullUp && this.diff < 0 && -this.diff < this.pullUpHeight ){
+          this.displaypullUpDiv=true
+          this.pullupChangeStyle='';
+          this.pullUpTip=PULL_UP_NORMAL
+          this.refreshStep = STATE_PULL_NORMAL
+        }
+      },
+      reset(){
+        if(this.refreshStep!=STATE_DEFAULT){
+          this.refreshStep=STATE_DEFAULT
+          if(!this.disablePullDown){
+            this.displaypullDownDiv=false
+            this.pulldownChangeStyle=''
+            }
+            if(!this.disablePullUp){
+              this.displaypullUpDiv=false
+              this.pullupChangeStyle=''
+            }
+            clearTimeout(this.timeoutH)
+          }
+        },
+
+        _onTouchEnd (e) {
+          this.isTouchEnd = true
+          this.start = this.end = 0
+          let _this=this;
+          if(this.refreshStep == STATE_PULL_RELEASE){
+            if (!this.disablePullUp && this.pullupChangeStyle==STYLE_RELEASE) {  
+              this.pullupChangeStyle=STYLE_REFRESH
+              this.pullUpTip=PULL_UP_LOADING
+              this.refreshStep = STATE_PULL_LOADING;
+              this.$emit('onPullup');
+            }else if(!this.disablePullDown && this.pulldownChangeStyle==STYLE_RELEASE){
+              this.pulldownChangeStyle=STYLE_REFRESH 
+              this.pullDownTip=PULL_DOWN_LOADING
+              this.refreshStep = STATE_PULL_LOADING;
+              this.$emit('onPulldown');
+            }
+
+            this.timeoutH=window.setTimeout(function(){
+              if(_this.refreshStep==STATE_PULL_LOADING) 
+                _this.reset();
+            },2000);
+          }else{
+            _this.reset();
+          }
+          this.$el.removeEventListener('touchmove', this.whenTouchMove) 
+          this.$el.removeEventListener('touchend', this.whenTouchEnd) 
+
+        }
+      }
+    }
+</script>
+
+<style scoped>
+/*.pull-body{
+  transition: all 0.2s linear;
+}*/
+  .hide{
+    display: none;
+  }
+  .pull-container {
+    overflow: hidden;
+  }
+
+  .spinner {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  .spinner.top {
+    margin-top: -50px;
+  }
+  .spinner.bottom {
+    margin-bottom: -50px;
+  }
+
+  /*refresh start*/
+  .pulldown,.pullup {  
+    height: 50px;  
+    line-height: 50px;  
+    padding: 5px 15px;  
+    font-weight: bold;  
+    font-size: 14px;  
+    color: #888;  
+    text-align: center;
+  }  
+  
+  .pulldown .pulldown-icon,.pullup .pullup-icon {  
+    display: block;   
+    width: 40px;  
+    height: 40px;  
+    background: url(../assets/img/pull-icon@2x.png) 0 0 no-repeat;  
+    -webkit-background-size: 40px 80px;  
+    background-size: 40px 80px;  
+    -webkit-transition-property: -webkit-transform;  
+    -webkit-transition-duration: 250ms;  
+  }  
+
+  .pulldown .pulldown-label, .pullup .pullup-label{  
+    position:relative;  
+    top: -40px;
+  }  
+  .pulldown .pulldown-icon {  
+    -webkit-transform: rotate(0deg) translateZ(0);  
+  }  
+  .pullup .pullup-icon {  
+    -webkit-transform: rotate(-180deg) translateZ(0);  
+  }
+  
+  .pulldown.release .pulldown-icon {  
+    -webkit-transform: rotate(-180deg) translateZ(0);  
+  }
+
+  .pullup.release .pullup-icon {  
+    -webkit-transform: rotate(0deg) translateZ(0);  
+  }
+
+  .pulldown.refresh .pulldown-icon,.pullup.refresh .pullup-icon {  
+    background-position: 0 100%;  
+    -webkit-transition-duration: 0ms;  
+    -webkit-animation: spinner 3s infinite linear;
+    animation: spinner 3s infinite linear;
+  }
+  /*通用转动动画*/
+@-webkit-keyframes spinner {
+  0% { -webkit-transform: rotate(0deg); }
+  50% { -webkit-transform: rotate(180deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+  /*refresh end*/
+
+</style>
