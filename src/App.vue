@@ -3,13 +3,14 @@
   <pull-to-refresh
     @on-pullup='onPullup'
     @on-pulldown='onPulldown'>
-    <ul>
+    <ul class="page">
       <li track-by="$index" v-for="(item, i) in items">
         # item {{ i }} 
       </li>
     </ul>
   </pull-to-refresh>
-  <b>disable on-pullup && pulldown:</b>
+
+<!--   <b>disable on-pullup && pulldown:</b>
   <pull-to-refresh
     :disable-pullup="true"
     :disable-pulldown="true"
@@ -20,7 +21,7 @@
         # item {{ i }} 
       </li>
     </ul>
-  </pull-to-refresh>
+  </pull-to-refresh> -->
 </div>
 </template>
 
@@ -41,7 +42,7 @@ export default {
       console.log('onPullup');
       setTimeout(()=>{
         console.log('finshCallback');
-        this.items=[6,6,6,6,6]
+        this.items=[6,6,6,6,6,6,6,6,6,6,6]
         finshCallback();//finish refreshing state
       },3000);
     },
@@ -50,7 +51,7 @@ export default {
       console.log('onPulldown');
       setTimeout(()=>{
         console.log('finshCallback');
-        this.items=[9,9,9,9,9,9]
+        this.items=[9,9,9,9,9,9,9,9,9,9,9,9,9,9]
         finshCallback();//finish refreshing state
       },3000);
     }
@@ -63,8 +64,14 @@ body {
   font-family: Helvetica, sans-serif;
 }
 
+.page{
+  height: 400px;
+}
+
 #app {
   height: 100%;
+  max-width: 400px;
+  margin: 0 auto
 }
 ul{
   list-style: none;

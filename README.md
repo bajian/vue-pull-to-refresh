@@ -4,7 +4,7 @@ alternatively pull down or pull up or both
 
 ##demo
 
-[online-demo](https://cdn.rawgit.com/bajian/vue-pull-to-refresh/master/dist/demo1.html)
+[online-demo](https://cdn.rawgit.com/bajian/vue-pull-to-refresh/master/dist/demo2.html)
 
 ## Build Setup
 
@@ -24,7 +24,7 @@ npm run build
     @on-pullup='onPullup'
     @on-pulldown='onPulldown'>
     <!-- content container -->
-    <ul>
+    <ul class="page">
       <li track-by="$index" v-for="(item, i) in items">
         # item {{ i }} 
       </li>
