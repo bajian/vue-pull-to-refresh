@@ -66,7 +66,7 @@ computed: {
 
 data() {
   return {
-    end: 0,
+    start: 0,
     deltaY: 0,
     pullDownHeight: 50,
     pullUpHeight: 50,
@@ -82,11 +82,12 @@ data() {
     pullupChangeStyle:''
   }
 },
-
-attached() {
-  this.registerDrag();
-},
-
+  mounted(){
+    this.$nextTick(function () {
+      this.registerDrag()
+  })
+  }
+,
 methods: {
   registerDrag(){
     const drager = this.drager = new Drag(this.$el)

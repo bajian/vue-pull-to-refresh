@@ -4,8 +4,8 @@
     @on-pullup='onPullup'
     @on-pulldown='onPulldown'>
     <ul class="page">
-      <li track-by="$index" v-for="(item, i) in items">
-        # item {{ i }} 
+      <li :key="index" v-for="(item, index) in items">
+        # item {{ index }} 
       </li>
     </ul>
   </pull-to-refresh>
@@ -17,8 +17,8 @@
     @on-pullup='onPullup'
     @on-pulldown="onPulldown">
     <ul>
-      <li track-by="$index" v-for="(item, i) in items">
-        # item {{ i }} 
+      <li :key="index" v-for="(item, index) in items">
+        # item {{ index }} 
       </li>
     </ul>
   </pull-to-refresh> -->
