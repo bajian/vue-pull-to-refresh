@@ -1,10 +1,10 @@
 # pull2refresh
-alternatively pull down or pull up or both
+alternatively pull down or pull up or both for Vue2.0
 > A Vue.js project
 
 ##demo
 
-[online-demo](https://cdn.rawgit.com/bajian/vue-pull-to-refresh/master/dist/demo2.html)
+[online-demo](https://cdn.rawgit.com/bajian/vue-pull-to-refresh/master/dist/demo3.html)
 
 ## Build Setup
 
@@ -36,8 +36,8 @@ npm run build
 ### Properties
 | Name                 | Type      | Default      | Description                                                        |
 |----------------------|-----------|--------------|--------------------------------------------------------------------|
-| disable-pullup            | `Boolean`  | `false` | disable pullup |
-| disable-pulldown            | `Boolean`  | `false` | disable pulldown |
+| disable-pullup            | `Boolean`  | `false` | set true to disable pullup function|
+| disable-pulldown            | `Boolean`  | `false` | set true to disable disable pulldown |
 | on-pullup   | `Function` | `undefined`       | the pullup listener with a finshCallback param to tell it finsh refreshing state |
 | on-pulldown   | `Function` | `undefined`       | the pulldown listener with a finshCallback param to tell it finsh refreshing state |
 | ==================== | ========= | ============ | =================== |
@@ -54,7 +54,7 @@ const PULL_UP_NORMAL='上拉刷新'
 const PULL_UP_RELEASE='释放加载'
 const PULL_UP_LOADING='加载中，请稍后'
 
-timeout:8000//the 8s timeout of refreshing state if u donnot call the finshCallback
+timeout=8000//the 8s timeout of refreshing state if u donnot call the finshCallback
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
