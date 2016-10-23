@@ -23,13 +23,21 @@ npm run build
   <pull-to-refresh
     @on-pullup='onPullup'
     @on-pulldown='onPulldown'>
-    <!-- content container -->
-    <ul class="page">
-      <li track-by="$index" v-for="(item, i) in items">
-        # item {{ i }} 
+    <ul>
+      <li :key="index" v-for="(item, index) in items">
+        # item {{ index }} 
       </li>
     </ul>
   </pull-to-refresh>
+```
+
+```js
+onPullup(finshCallback) {
+      setTimeout(()=>{
+        this.items=this.items.concat([6,6,6,6,6,6,6,6,6,6,6])
+        finshCallback();//finish the refreshing state
+      },3000);
+    }
 ```
 
 ## Api
