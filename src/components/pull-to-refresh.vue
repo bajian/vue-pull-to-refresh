@@ -2,7 +2,8 @@
   <div :id="eleId" class="pull-container">
     <div class="scroller">
       <div class="pulldown"
-      :class="[pulldownChangeStyle,{'hide':!displaypullDownDiv}]">
+      :class="[pulldownChangeStyle,{'hide':!displaypullDownDiv}]"
+      :style="{'margin-top':'-'+pullDownDiff+'px'}">
       <div class="pulldown-icon"></div>
       <div class="pulldown-label">{{pullDownTip}}</div>
     </div>
@@ -39,7 +40,7 @@ const STYLE_REFRESH='refresh'
 
 //不写到vue data中，优化内存
 var timeoutHandler=0,
-timeout=8000,
+timeout=30000,//timeout of reset refreshing state if u donnot call the finshCallback
 pullDownHeight=50,//pull down element height
 pullUpHeight=50;
 
@@ -63,7 +64,8 @@ export default {
       refreshStep:STATE_DEFAULT,
       eleId:'bajianscroll',
       pulldownChangeStyle:'',
-      pullupChangeStyle:''
+      pullupChangeStyle:'',
+      pullDownDiff:0
     }
   },
   mounted(){
@@ -88,9 +90,11 @@ export default {
         return;
 
       if(!this.disablePulldown && this.myscroll.y > 5 && this.myscroll.y < pullDownHeight/2){
+        this.pullDownDiff=pullDownHeight-this.myscroll.y;
+        if (this.refreshStep===STATE_PULL_NORMAL) return;
         this.displaypullDownDiv=true
         this.displaypullUpDiv=false
-        this.pulldownChangeStyle='';
+        this.pulldownChangeStyle=''
         this.pullDownTip = PULL_DOWN_NORMAL
         this.refreshStep = STATE_PULL_NORMAL
       }else if(!this.disablePulldown && this.myscroll.y >= pullDownHeight){
@@ -102,9 +106,10 @@ export default {
         this.pullUpTip=PULL_UP_RELEASE
         this.refreshStep = STATE_PULL_RELEASE
       }else if(!this.disablePullup && this.myscroll.y < -5 && this.myscroll.y<this.myscroll.maxScrollY && this.myscroll.y > -pullUpHeight/2+this.myscroll.maxScrollY){
+        if (this.refreshStep===STATE_PULL_NORMAL) return;
         this.displaypullUpDiv=true
         this.displaypullDownDiv=false
-        this.pullupChangeStyle='';
+        this.pullupChangeStyle=''
         this.pullUpTip=PULL_UP_NORMAL
         this.refreshStep = STATE_PULL_NORMAL
       }
@@ -128,6 +133,7 @@ export default {
     },
 
     _onTouchEnd () {
+      this.pullDownDiff=0
       if(this.refreshStep == STATE_PULL_RELEASE){
         if (!this.disablePullup && this.pullupChangeStyle==STYLE_RELEASE) {
           this.myscroll.maxScrollY<-10 &&this.myscroll.scrollTo(0,this.myscroll.maxScrollY-pullUpHeight)
