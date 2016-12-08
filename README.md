@@ -62,7 +62,7 @@ const PULL_UP_NORMAL='上拉刷新'
 const PULL_UP_RELEASE='释放加载'
 const PULL_UP_LOADING='加载中，请稍后'
 
-timeout=30000//the 8s timeout of reset refreshing state if u donnot call the finshCallback
+timeout=30000//the 30s timeout of reseting refreshing state if u donnot call the finshCallback
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
