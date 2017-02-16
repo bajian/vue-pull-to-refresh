@@ -105,7 +105,7 @@ export default {
         this.pullupChangeStyle=STYLE_RELEASE
         this.pullUpTip=PULL_UP_RELEASE
         this.refreshStep = STATE_PULL_RELEASE
-      }else if(!this.disablePullup && this.myscroll.y < -5 && this.myscroll.y<this.myscroll.maxScrollY && this.myscroll.y > -pullUpHeight/2+this.myscroll.maxScrollY){
+      }else if(!this.disablePullup && this.myscroll.y < -5 && this.myscroll.y<this.myscroll.maxScrollY && this.myscroll.y > -pullUpHeight+this.myscroll.maxScrollY){
         if (this.refreshStep===STATE_PULL_NORMAL) return;
         this.displaypullUpDiv=true
         this.displaypullDownDiv=false

@@ -4,7 +4,7 @@ alternatively pull down or pull up or both for Vue2.0
 
 ##demo
 
-[online-demo](https://cdn.rawgit.com/bajian/vue-pull-to-refresh/master/dist/demo4.html)
+[live-demo](https://cdn.rawgit.com/bajian/vue-pull-to-refresh/master/dist/demo5.html)
 
 ## Build Setup
 
@@ -45,9 +45,9 @@ onPullup(finshCallback) {
 | Name                 | Type      | Default      | Description                                                        |
 |----------------------|-----------|--------------|--------------------------------------------------------------------|
 | disable-pullup            | `Boolean`  | `false` | set true to disable pullup function|
-| disable-pulldown            | `Boolean`  | `false` | set true to disable disable pulldown |
-| on-pullup   | `Function` | `undefined`       | the pullup listener with a finshCallback param to tell it finsh refreshing state |
-| on-pulldown   | `Function` | `undefined`       | the pulldown listener with a finshCallback param to tell it finsh refreshing state |
+| disable-pulldown            | `Boolean`  | `false` | set true to disable pulldown function|
+| on-pullup   | `Function` | `undefined`       | the pullup listener with a finshCallback param to tell it to finsh refreshing state |
+| on-pulldown   | `Function` | `undefined`       | the pulldown listener with a finshCallback param to tell it to finsh refreshing state |
 | ==================== | ========= | ============ | =================== |
 
 
