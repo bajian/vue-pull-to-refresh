@@ -19,7 +19,7 @@
 
 <script>
 
-  import Scroll from '../utils/myScroll'
+  import Scroll from './myScroll'
 
   const PULL_DOWN_NORMAL='下拉刷新'
   const PULL_DOWN_RELEASE='释放加载'
@@ -194,7 +194,7 @@ export default {
     display: block;   
     width: 40px;  
     height: 40px;  
-    background: url(../assets/img/pull-icon@2x.png) 0 0 no-repeat;  
+    background: url(./pull-icon@2x.png) 0 0 no-repeat;  
     -webkit-background-size: 40px 80px;  
     background-size: 40px 80px;  
     -webkit-transition-property: -webkit-transform;  

@@ -4,9 +4,9 @@ alternatively pull down or pull up or both for Vue2.0
 
 ##demo
 
-[live-demo](https://cdn.rawgit.com/bajian/vue-pull-to-refresh/master/dist/demo5.html)
+[live-demo](https://bajian.github.io/vue-pull-to-refresh/dist/)
 
-## Build Setup
+## Build Setup DEMO
 
 ``` bash
 # install dependencies
@@ -32,6 +32,8 @@ npm run build
 ```
 
 ```js
+import PullToRefresh from './components/pull-to-refresh'
+
 onPullup(finshCallback) {
       setTimeout(()=>{
         this.items=this.items.concat([6,6,6,6,6,6,6,6,6,6,6])
@@ -65,4 +67,3 @@ const PULL_UP_LOADING='加载中，请稍后'
 timeout=30000//the 30s timeout of reseting refreshing state if u donnot call the finshCallback
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

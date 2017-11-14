@@ -1,7 +1,5 @@
     import IScroll from './iscroll-probe.js'
-    var _index_key_ = {};	
 
-    var scrollObj = {};
 
     var extend=function(oldObj,newObj){
     	for(var key in newObj){

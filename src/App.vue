@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import PullToRefresh from './components/pull-to-refresh.vue'
+import PullToRefresh from './components/pull-to-refresh'
 
 export default {
   components: { PullToRefresh },
