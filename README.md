@@ -2,7 +2,7 @@
 alternatively pull down or pull up or both for Vue2.0
 > A Vue.js project
 
-##demo
+## demo
 
 [live-demo](https://bajian.github.io/vue-pull-to-refresh/dist/)
 
