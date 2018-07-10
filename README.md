@@ -1,6 +1,6 @@
 # pull2refresh
-alternatively pull down or pull up or both for Vue2.0
-> A Vue.js project
+alternatively pull down or pull up or both for Vue2.+
+> A Vue.js project with vue-cli3
 
 ## demo
 
@@ -13,7 +13,7 @@ alternatively pull down or pull up or both for Vue2.0
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run serve
 
 # build for production with minification
 npm run build
