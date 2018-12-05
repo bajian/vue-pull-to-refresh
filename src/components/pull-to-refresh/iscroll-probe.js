@@ -268,7 +268,7 @@ var IScroll = (function (window, document, Math) {
             if (!(/(SELECT|INPUT|TEXTAREA)/i).test(target.tagName)) {
                 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/initMouseEvent
                 // initMouseEvent is deprecated.
-                ev = document.createEvent(window.MouseEvent ? 'MouseEvents' : 'Event');
+                ev = document.createEvent('Event');
                 ev.initEvent('click', true, true);
                 ev.view = e.view || window;
                 ev.detail = 1;
